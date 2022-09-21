@@ -6,3 +6,5 @@ java -cp SberGraph.jar com.test.sber.EmployeesGraph
 ````
 Hit enter.
 Then follow interactive instructions.
+## Jar path
+[Prebuilded jar](/out/artifacts/SberGraph_jar/SberGraph.jar)
