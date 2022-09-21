@@ -39,4 +39,8 @@ class EmployeesGraphTest extends AnyFlatSpec with Matchers {
     eGraph.prettyEmployee(2).replaceAll("\\s", "") shouldBe expectedOutput.replaceAll("\\s", "")
   }
 
+  it should "parent full name should be not be same as subordinate" in {
+    eGraph.node(5).map(_.employeeFullName) should not be eGraph.node(4).map(_.employeeFullName)
+  }
+
 }

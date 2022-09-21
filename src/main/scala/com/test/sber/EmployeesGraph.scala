@@ -31,11 +31,10 @@ class EmployeesGraph(inputStream: InputStream) {
           val superId = supervisor_id.toInt
 
           val node = graph.getOrElseUpdate(empId, HNode(employeeFullName = full_name))
-          graph.update(empId, node.copy(supervisorIds = node.supervisorIds + superId))
+          graph.update(empId, node.copy(supervisorIds = node.supervisorIds + superId, employeeFullName = full_name))
 
-          val sNode = graph.getOrElseUpdate(superId, HNode(employeeFullName = full_name))
+          val sNode = graph.getOrElseUpdate(superId, HNode(employeeFullName = "Virtual node"))
           graph.update(superId, sNode.copy(subordinatesIds = sNode.subordinatesIds + empId))
-
         case inArg => throw new IllegalArgumentException(s"String $inArg could not be splitted")
       }
   }
@@ -60,9 +59,11 @@ class EmployeesGraph(inputStream: InputStream) {
     vMaxLevel = Math.max(vMaxLevel, resolveLevel(id))
   }
 
+  def node(id: Int): Option[HNode] = graph.get(id)
+
   def prettyEmployee(id: Int): String = {
     graph.get(id).map { node =>
-      def fullName(id: Int) = graph.get(id).map(emp => s"$id, ${emp.employeeFullName}").getOrElse("No Name")
+      def fullName(id: Int) = graph.get(id).map(_.employeeFullName).getOrElse("No Name")
       s"""Employee
          | id '$id'
          | full name ${node.employeeFullName}
